@@ -1,0 +1,9 @@
+MyVocal V3 Dialogue Multi-Context WebSocket SDKs
+Copyright 2026 MyVocal AI
+
+Licensed under the Apache License, Version 2.0.
+
+Runtime dependency:
+
+- gorilla/websocket 1.5.3, BSD 2-Clause License
+  https://github.com/gorilla/websocket
