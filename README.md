@@ -2,10 +2,17 @@
 
 Go 1.22+ multi-context V3 dialogue client.
 
-## Local Installation
+## Installation
 
-The module is not yet published to GitHub. From an extracted local package,
-use a temporary `replace` while developing:
+From an existing Go module:
+
+```bash
+go get github.com/MyVocal-AI/myvocal-v3-dialogue-wss-sdk-go@v1.0.1
+```
+
+## Local ZIP Installation
+
+When using an extracted ZIP instead of GitHub, add a temporary `replace`:
 
 ```go
 require github.com/MyVocal-AI/myvocal-v3-dialogue-wss-sdk-go v0.0.0
