@@ -75,9 +75,8 @@ Connection-level errors remain sticky and are returned by later close calls.
 Usage is reported by `GET https://api.voicelibrary.co/enterprise/v1/user/usage`.
 `myvocal_v3`, `myvocal_v4`, and `myvocal_v3_turbo` record characters under
 `tts.v3_chars`, `tts.v4_chars`, and `tts.v3_turbo_chars`, respectively,
-and contribute to `tts.total_chars`. Use the returned counters to reconcile
-usage; no SDK-side multiplier is applied. New-model counters describe new
-requests, not a historical backfill.
+and contribute to `tts.total_chars`. For usage details, see
+[Query primary key usage](https://api-docs.myvocal.ai/336818975e0).
 
 The live test is skipped unless `MYVOCAL_TTS_API_KEY` and
 `MYVOCAL_VOICE_ID` are present in the current process.
