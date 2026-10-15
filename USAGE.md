@@ -20,7 +20,7 @@ This endpoint requires dedicated concurrency (`priority=dedicated_concurrency`).
 | --- | --- | --- | --- | --- |
 | Model | `model_id` | `modelId(...)` | `ModelID` | `myvocal_v3`; also `myvocal_v4`, `myvocal_v3_turbo` |
 | Audio format | `format` | `format(...)` | `Format` | `mp3_128` |
-| Language | `language_code` | `languageCode(...)` | `LanguageCode` | Omit for automatic selection; two-letter code such as `en`, `zh` |
+| Language | `language_code` | `languageCode(...)` | `LanguageCode` | Omit for automatic selection; model-supported two- or three-letter code, e.g. `zh`, `yue`, `fil` |
 | Character timing | `timestamps` | `timestamps(...)` | `Timestamps` | `false` |
 | Text normalization | `text_normalization` | `textNormalization(...)` | `TextNormalization` | `on`; `auto`, `on`, `off` |
 | Consistent generation | `seed` | `seed(...)` | `Seed` | Optional; integer `1..4294967295` |
@@ -29,6 +29,18 @@ This endpoint requires dedicated concurrency (`priority=dedicated_concurrency`).
 Start with `mp3_128` and default settings. Other SDK format values are `mp3_64`, `mp3_96`, `mp3_192`, `pcm_8000`, `pcm_16000`, `pcm_22050`, `pcm_24000`, `pcm_44100`, and `ulaw_8000`. Language, advanced options, and format availability depend on the selected model; see the [API reference](https://api-docs.myvocal.ai/3892090w0).
 
 A fixed seed can improve consistency but does not guarantee identical audio. For exact audio separation between speaking turns, prefer PCM; MP3 chunk boundaries may not match turn boundaries exactly.
+
+## Output languages
+
+`myvocal_v4` and `myvocal_v3_turbo` support the same 94 languages. See the [language list](https://api-docs.myvocal.ai/64249845f0#输出语言) for names and codes. Use `zh` for Mandarin Chinese and `yue` for Cantonese. The three-letter codes are `ast`, `ceb`, `ckb`, `fil`, `kam`, and `yue`; do not shorten them or use regional codes such as `zh-CN`.
+
+Set the language in the connection options. It applies to that connection; use separate connections for different language configurations. Omit it to select a language from the text. Supply text in the intended language; this option does not translate text. Other models have their own supported language ranges.
+
+```go
+options := dialogue.DefaultConnectionOptions()
+options.ModelID = "myvocal_v4"
+options.LanguageCode = "yue"
+```
 
 ## Create a context and send text
 

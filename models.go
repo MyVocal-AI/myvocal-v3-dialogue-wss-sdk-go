@@ -16,7 +16,7 @@ var publicFormats = map[string]struct{}{
 	"pcm_24000": {}, "pcm_44100": {}, "ulaw_8000": {},
 }
 
-var languagePattern = regexp.MustCompile(`^[A-Za-z]{2}$`)
+var languagePattern = regexp.MustCompile(`^[A-Za-z]{2,3}$`)
 
 type ConnectionOptions struct {
 	Endpoint          string
@@ -48,7 +48,7 @@ func (options ConnectionOptions) Validate() error {
 	}
 	if options.LanguageCode != "" &&
 		!languagePattern.MatchString(options.LanguageCode) {
-		return &ValidationError{"language_code must be ISO 639-1"}
+		return &ValidationError{"language_code must contain 2 or 3 ASCII letters"}
 	}
 	switch options.TextNormalization {
 	case "auto", "on", "off":

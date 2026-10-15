@@ -1,5 +1,5 @@
 {
-  "contractVersion": "1.1.1",
+  "contractVersion": "1.1.2",
   "endpoint": "wss://api.voicelibrary.co/enterprise/v1/text-to-dialogue/websocket/multi",
   "authentication": {
     "header": "api-key"
@@ -25,7 +25,7 @@
     },
     "language_code": {
       "default": null,
-      "pattern": "^[A-Za-z]{2}$"
+      "pattern": "^[A-Za-z]{2,3}$"
     },
     "timestamps": {
       "default": false

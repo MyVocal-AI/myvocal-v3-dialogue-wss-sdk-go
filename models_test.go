@@ -2,8 +2,36 @@ package myvocalv3dialogue
 
 import (
 	"net/url"
+	"strings"
 	"testing"
 )
+
+func TestLanguageCodesReachConnectionQuery(t *testing.T) {
+	for _, model := range []string{"myvocal_v3", "myvocal_v4", "myvocal_v3_turbo"} {
+		for _, code := range []string{"en", "zh", "ast", "yue", "ceb", "fil", "ckb", "kam"} {
+			options := DefaultConnectionOptions()
+			options.ModelID = model
+			options.LanguageCode = strings.ToUpper(code)
+			raw, err := options.BuildURL()
+			if err != nil {
+				t.Fatalf("%s %s: %v", model, code, err)
+			}
+			parsed, _ := url.Parse(raw)
+			assertEqual(t, code, parsed.Query().Get("language_code"))
+			assertEqual(t, model, parsed.Query().Get("model_id"))
+		}
+	}
+}
+
+func TestLanguageCodeFormatRemainsValidated(t *testing.T) {
+	for _, code := range []string{"e", "engl", "en-US", "a1", " yue", "粤语"} {
+		options := DefaultConnectionOptions()
+		options.LanguageCode = code
+		if err := options.Validate(); err == nil {
+			t.Fatalf("invalid language accepted: %q", code)
+		}
+	}
+}
 
 func TestModelSelectionAndOmittedModel(t *testing.T) {
 	for _, model := range []string{"myvocal_v3", "myvocal_v4", "myvocal_v3_turbo", "future/model +1", ""} {

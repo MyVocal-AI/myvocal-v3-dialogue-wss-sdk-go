@@ -7,15 +7,15 @@ Go client for multi-role dialogue synthesis. Requires Go 1.22 or later and an en
 From your application's Go module:
 
 ```bash
-go get github.com/MyVocal-AI/myvocal-v3-dialogue-wss-sdk-go@v1.1.1
+go get github.com/MyVocal-AI/myvocal-v3-dialogue-wss-sdk-go@v1.1.2
 ```
 
-To use the [downloadable ZIP](https://github.com/MyVocal-AI/myvocal-v3-dialogue-wss-sdk-go/releases/tag/v1.1.1), extract it beside your application and add these entries to your application's `go.mod`:
+To use the [downloadable ZIP](https://github.com/MyVocal-AI/myvocal-v3-dialogue-wss-sdk-go/releases/tag/v1.1.2), extract it beside your application and add these entries to your application's `go.mod`:
 
 ```go
-require github.com/MyVocal-AI/myvocal-v3-dialogue-wss-sdk-go v1.1.1
+require github.com/MyVocal-AI/myvocal-v3-dialogue-wss-sdk-go v1.1.2
 
-replace github.com/MyVocal-AI/myvocal-v3-dialogue-wss-sdk-go => ../myvocal-v3-dialogue-wss-sdk-go-1.1.1
+replace github.com/MyVocal-AI/myvocal-v3-dialogue-wss-sdk-go => ../myvocal-v3-dialogue-wss-sdk-go-1.1.2
 ```
 
 Adjust the relative path to your extracted folder, then run `go mod tidy`.
@@ -33,6 +33,18 @@ options.ModelID = "myvocal_v4" // Or "myvocal_v3_turbo"
 ```
 
 Use `DefaultConnectionOptions()` or named fields when constructing options. An omitted or empty `ModelID` selects `myvocal_v3`.
+
+## Output languages
+
+`myvocal_v4` and `myvocal_v3_turbo` support the same 94 output languages. Use `zh` for Mandarin Chinese and `yue` for Cantonese. See the [language list](https://api-docs.myvocal.ai/64249845f0#输出语言) for all supported codes.
+
+```go
+options := dialogue.DefaultConnectionOptions()
+options.ModelID = "myvocal_v4"
+options.LanguageCode = "yue"
+```
+
+Omit the language option to select a language from the input text. Provide text in the desired language; the option does not translate it.
 
 ## Run the example
 
