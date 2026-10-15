@@ -1,11 +1,8 @@
 {
-  "contractVersion": "1.1.0",
-  "status": "frozen",
+  "contractVersion": "1.1.1",
   "endpoint": "wss://api.voicelibrary.co/enterprise/v1/text-to-dialogue/websocket/multi",
   "authentication": {
-    "header": "api-key",
-    "persist": false,
-    "log": false
+    "header": "api-key"
   },
   "fixedQuery": {
     "priority": "dedicated_concurrency"
@@ -28,8 +25,7 @@
     },
     "language_code": {
       "default": null,
-      "pattern": "^[A-Za-z]{2}$",
-      "serialize": "lowercase"
+      "pattern": "^[A-Za-z]{2}$"
     },
     "timestamps": {
       "default": false
@@ -56,9 +52,7 @@
         "myvocal_v3",
         "myvocal_v4",
         "myvocal_v3_turbo"
-      ],
-      "serialize": "unchanged",
-      "clientWhitelist": false
+      ]
     }
   },
   "limits": {
@@ -73,8 +67,6 @@
     },
     "contextIdleSeconds": 20
   },
-  "clientTextFramesOnly": true,
-  "defensiveServerBinaryJson": true,
   "audioEncoding": "base64",
   "operations": [
     "connect",
@@ -99,18 +91,14 @@
     "required": [
       "is_final"
     ],
-    "forbidden": [
-      "sticky_terminal_error"
-    ]
+    "withoutErrors": true
   },
   "socketSuccess": {
     "required": [
       "all_active_contexts_final",
       "close_code_1000"
     ],
-    "forbidden": [
-      "sticky_terminal_error"
-    ]
+    "withoutErrors": true
   },
   "errorCategories": [
     "ValidationError",
@@ -123,21 +111,10 @@
   ],
   "automaticReplay": false,
   "activeSessionReconnect": false,
-  "audioControlQueue": false,
   "audioAccumulationDefault": false,
-  "excludedCapabilities": [
-    "arbitrary_priority_selection"
-  ],
   "runtimes": {
     "python": ">=3.9",
-    "javaBytecodeMajor": 52,
-    "javaTestVersions": [
-      8,
-      11,
-      17,
-      21,
-      25
-    ],
+    "java": ">=8",
     "go": ">=1.22"
   },
   "license": "Apache-2.0"
