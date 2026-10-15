@@ -1,5 +1,5 @@
 {
-  "contractVersion": "1.0.0",
+  "contractVersion": "1.1.0",
   "status": "frozen",
   "endpoint": "wss://api.voicelibrary.co/enterprise/v1/text-to-dialogue/websocket/multi",
   "authentication": {
@@ -8,8 +8,7 @@
     "log": false
   },
   "fixedQuery": {
-    "priority": "dedicated_concurrency",
-    "model_id": "myvocal_v3"
+    "priority": "dedicated_concurrency"
   },
   "options": {
     "format": {
@@ -50,6 +49,16 @@
     },
     "enable_logging": {
       "default": true
+    },
+    "model_id": {
+      "default": "myvocal_v3",
+      "knownModels": [
+        "myvocal_v3",
+        "myvocal_v4",
+        "myvocal_v3_turbo"
+      ],
+      "serialize": "unchanged",
+      "clientWhitelist": false
     }
   },
   "limits": {
@@ -117,7 +126,6 @@
   "audioControlQueue": false,
   "audioAccumulationDefault": false,
   "excludedCapabilities": [
-    "arbitrary_model_selection",
     "arbitrary_priority_selection"
   ],
   "runtimes": {

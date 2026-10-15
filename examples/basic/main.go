@@ -15,6 +15,9 @@ func main() {
 	voiceID := required("MYVOCAL_VOICE_ID")
 	var totalAudio int64
 	options := dialogue.DefaultConnectionOptions()
+	if modelID := os.Getenv("MYVOCAL_MODEL_ID"); modelID != "" {
+		options.ModelID = modelID
+	}
 	options.Format = "mp3_128"
 	options.LanguageCode = "en"
 	options.Timestamps = true

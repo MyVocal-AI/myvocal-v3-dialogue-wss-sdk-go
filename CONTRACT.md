@@ -1,6 +1,6 @@
-# MyVocal V3 Dialogue Multi-Context WebSocket SDK Contract
+# MyVocal Dialogue Multi-Context WebSocket SDK Contract
 
-Version: `1.0.0`
+Version: `1.1.0`
 
 Status: Frozen for Python, Java, and Go implementation.
 
@@ -19,19 +19,22 @@ wss://api.voicelibrary.co/enterprise/v1/text-to-dialogue/websocket/multi
 - The SDK must not log, persist, hash, partially reveal, or serialize the Key.
 - TLS certificate and hostname verification must remain enabled.
 
-The SDK always sends these fixed Query values:
+The SDK always sends this fixed Query value:
 
 ```text
 priority=dedicated_concurrency
-model_id=myvocal_v3
 ```
 
-Applications cannot replace either fixed value.
+Applications cannot replace priority. `model_id` is configurable and defaults
+to `myvocal_v3`; `myvocal_v4` and `myvocal_v3_turbo` are also supported.
+Model IDs are passed unchanged without a client model whitelist.
+These new models require this dialogue endpoint, not ordinary TTS WSS.
 
 ## 2. Connection Options
 
 | SDK option | Wire field | Type | Default | Validation |
 |---|---|---|---|---|
+| modelId | `model_id` | string | `myvocal_v3` | Sent unchanged; server validates support |
 | format | `format` | enum | `mp3_128` | One of the 10 public formats |
 | languageCode | `language_code` | string or absent | absent | Two ISO 639-1 ASCII letters; serialize lowercase |
 | timestamps | `timestamps` | boolean | `false` | Boolean |
@@ -41,7 +44,7 @@ Applications cannot replace either fixed value.
 | connectTimeout | client only | duration | 30 seconds | Greater than zero |
 | closeTimeout | client only | duration | 60 seconds | Greater than zero |
 
-Public formats:
+SDK-accepted formats (model-specific availability may differ):
 
 ```text
 mp3_64
@@ -460,12 +463,11 @@ All three implementations must test:
   field mappings.
 - Only fields in this contract are accepted by public request builders.
 
-## 17. Usage Wording
+## 17. Usage Reporting
 
-Customer-facing documentation uses:
-
-> Successfully generated text is charged at twice the standard TTS character
-> usage. For example, generating 100 characters records 200 characters of
-> usage.
-
-SDK code does not expose internal accounting field names.
+Usage is reported by `GET https://api.voicelibrary.co/enterprise/v1/user/usage`.
+`myvocal_v3`, `myvocal_v4`, and `myvocal_v3_turbo` record characters under
+`tts.v3_chars`, `tts.v4_chars`, and `tts.v3_turbo_chars`, respectively,
+and contribute to `tts.total_chars`. Use the returned counters to reconcile
+usage; no SDK-side multiplier is applied. New-model counters describe new
+requests, not a historical backfill.

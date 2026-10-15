@@ -26,11 +26,13 @@ type ConnectionOptions struct {
 	TextNormalization string
 	Seed              *int64
 	EnableLogging     bool
+	ModelID           string
 }
 
 func DefaultConnectionOptions() ConnectionOptions {
 	return ConnectionOptions{
 		Endpoint:          DefaultEndpoint,
+		ModelID:           "myvocal_v3",
 		Format:            "mp3_128",
 		TextNormalization: "on",
 		EnableLogging:     true,
@@ -70,7 +72,11 @@ func (options ConnectionOptions) BuildURL() (string, error) {
 	}
 	query := parsed.Query()
 	query.Set("priority", "dedicated_concurrency")
-	query.Set("model_id", "myvocal_v3")
+	modelID := options.ModelID
+	if modelID == "" {
+		modelID = "myvocal_v3"
+	}
+	query.Set("model_id", modelID)
 	query.Set("format", options.Format)
 	query.Set("timestamps", strconv.FormatBool(options.Timestamps))
 	query.Set("text_normalization", options.TextNormalization)

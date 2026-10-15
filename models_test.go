@@ -5,6 +5,30 @@ import (
 	"testing"
 )
 
+func TestModelSelectionAndOmittedModel(t *testing.T) {
+	for _, model := range []string{"myvocal_v3", "myvocal_v4", "myvocal_v3_turbo", "future/model +1", ""} {
+		// Existing keyed literals may omit ModelID.
+		options := ConnectionOptions{Endpoint: DefaultEndpoint, Format: "mp3_128", TextNormalization: "on", EnableLogging: true}
+		options.ModelID = model
+		raw, err := options.BuildURL()
+		if err != nil {
+			t.Fatal(err)
+		}
+		parsed, err := url.Parse(raw)
+		if err != nil {
+			t.Fatal(err)
+		}
+		expected := model
+		if expected == "" {
+			expected = "myvocal_v3"
+		}
+		values := parsed.Query()["model_id"]
+		if len(values) != 1 || values[0] != expected {
+			t.Fatalf("model serialization: %v", values)
+		}
+	}
+}
+
 func TestURLContainsFixedQueryAndDefaults(t *testing.T) {
 	options := DefaultConnectionOptions()
 	raw, err := options.BuildURL()
